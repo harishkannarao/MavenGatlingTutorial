@@ -38,15 +38,23 @@
                 <groupId>io.gatling</groupId>
                 <artifactId>gatling-maven-plugin</artifactId>
                 <version>${gatling-plugin.version}</version>
+                <configuration>
+                    <skip>false</skip>
+                    <configFolder>src/test/resources</configFolder>
+                    <dataFolder>src/test/resources/data</dataFolder>
+                    <resultsFolder>target/gatling/results</resultsFolder>
+                    <bodiesFolder>src/test/resources/bodies</bodiesFolder>
+                    <simulationsFolder>src/test/scala</simulationsFolder>
+                    <noReports>false</noReports>
+                    <propagateSystemProperties>true</propagateSystemProperties>
+                    <failOnError>true</failOnError>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
                             <goal>execute</goal>
                         </goals>
                         <phase>integration-test</phase>
-                        <configuration>
-                            <skip>false</skip>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
