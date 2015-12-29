@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>spring-boot-sample-rest-service</module>
+        <module>test-config</module>
         <module>sample-rest-service-gatling-performance-test</module>
     </modules>
 
@@ -91,6 +92,13 @@
                 <groupId>io.gatling.highcharts</groupId>
                 <artifactId>gatling-charts-highcharts</artifactId>
                 <version>${gatling.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.harishkannarao.gatling</groupId>
+                <artifactId>test-config</artifactId>
+                <version>${project.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>

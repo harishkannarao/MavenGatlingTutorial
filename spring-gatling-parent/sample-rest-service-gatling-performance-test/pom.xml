@@ -29,6 +29,12 @@
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.harishkannarao.gatling</groupId>
+            <artifactId>test-config</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -48,6 +54,7 @@
                     <resultsFolder>target/gatling/results</resultsFolder>
                     <bodiesFolder>src/test/resources/bodies</bodiesFolder>
                     <simulationsFolder>src/test/scala</simulationsFolder>
+                    <simulationClass>com.harishkannarao.simulation.SampleRestServiceSimulation</simulationClass>
                     <noReports>false</noReports>
                     <propagateSystemProperties>true</propagateSystemProperties>
                     <failOnError>true</failOnError>
