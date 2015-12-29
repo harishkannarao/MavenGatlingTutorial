@@ -33,6 +33,7 @@
         <dependency>
             <groupId>com.harishkannarao.gatling</groupId>
             <artifactId>test-config</artifactId>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
