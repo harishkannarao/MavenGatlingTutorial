@@ -51,4 +51,8 @@ class SampleRestServiceSimulation extends Simulation {
       constantUsersPerSec(propertiesUtil.getConstantUsersPerSec.toDouble) during(new FiniteDuration(propertiesUtil.getDurationInMinutes.toLong, duration.MINUTES))
     ).protocols(httpConf)
   )
+  .assertions(
+    global.responseTime.mean.lessThan(2),
+    global.successfulRequests.percent.greaterThan(95)
+  )
 }
