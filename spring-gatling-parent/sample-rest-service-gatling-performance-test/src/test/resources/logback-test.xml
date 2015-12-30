@@ -6,7 +6,7 @@
     </contextListener>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>target/gatling/gatling_output.log</file>
+        <file>target/gatling/gatling_request_response.log</file>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{15} - %msg%n%rEx</pattern>
             <immediateFlush>false</immediateFlush>
