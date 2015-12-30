@@ -45,5 +45,9 @@ class SampleRestServiceSimulation extends Simulation {
       .check(status.is(200))
     )
 
-  setUp(scn.inject(atOnceUsers(1)).protocols(httpConf))
+  setUp(
+    scn.inject(
+      constantUsersPerSec(5) during(2 minutes)
+    ).protocols(httpConf)
+  )
 }
