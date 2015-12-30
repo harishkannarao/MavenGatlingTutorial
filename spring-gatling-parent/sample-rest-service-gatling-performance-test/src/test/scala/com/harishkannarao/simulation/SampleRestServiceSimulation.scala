@@ -5,6 +5,7 @@ import com.harishkannarao.util.SpringUtil
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
+import scala.concurrent.duration
 import scala.concurrent.duration._
 
 class SampleRestServiceSimulation extends Simulation {
@@ -47,7 +48,7 @@ class SampleRestServiceSimulation extends Simulation {
 
   setUp(
     scn.inject(
-      constantUsersPerSec(5) during(2 minutes)
+      constantUsersPerSec(propertiesUtil.getConstantUsersPerSec.toDouble) during(new FiniteDuration(propertiesUtil.getDurationInMinutes.toLong, duration.MINUTES))
     ).protocols(httpConf)
   )
 }
