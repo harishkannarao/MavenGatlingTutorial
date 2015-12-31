@@ -12,12 +12,12 @@ public class PropertiesUtil {
     private String applicationUrl;
 
     @Autowired
-    @Value("${constant.users.per.second}")
-    private String constantUsersPerSec;
+    @Value("${no.of.requests.per.second}")
+    private String noOfRequestsPerSecond;
 
     @Autowired
-    @Value("${duration.in.minutes}")
-    private String durationInMinutes;
+    @Value("${total.duration.in.seconds}")
+    private String totalDurationInSeconds;
 
 
     public String getApplicationUrl() {
@@ -28,19 +28,19 @@ public class PropertiesUtil {
         this.applicationUrl = applicationUrl;
     }
 
-    public String getConstantUsersPerSec() {
-        return constantUsersPerSec;
+    public String getNoOfRequestsPerSecond() {
+        return noOfRequestsPerSecond;
     }
 
-    public void setConstantUsersPerSec(String constantUsersPerSec) {
-        this.constantUsersPerSec = constantUsersPerSec;
+    public void setNoOfRequestsPerSecond(String noOfRequestsPerSecond) {
+        this.noOfRequestsPerSecond = noOfRequestsPerSecond;
     }
 
-    public String getDurationInMinutes() {
-        return durationInMinutes;
+    public String getTotalDurationInSeconds() {
+        return totalDurationInSeconds;
     }
 
-    public void setDurationInMinutes(String durationInMinutes) {
-        this.durationInMinutes = durationInMinutes;
+    public void setTotalDurationInSeconds(String totalDurationInSeconds) {
+        this.totalDurationInSeconds = totalDurationInSeconds;
     }
 }

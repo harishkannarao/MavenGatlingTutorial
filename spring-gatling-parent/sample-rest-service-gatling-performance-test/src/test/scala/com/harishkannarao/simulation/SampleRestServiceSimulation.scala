@@ -25,12 +25,12 @@ class SampleRestServiceSimulation extends Simulation {
       .check(status.is(201))
       .check(jsonPath("$.id").saveAs("id"))
     )
-    .pause(1) // Note that Gatling has recorder real time pauses
+    .pause(new FiniteDuration(1, duration.SECONDS)) // Note that Gatling has recorder real time pauses
     .exec(http("Get Customer")
       .get("/customer/${id}")
       .check(status.is(200))
     )
-    .pause(1)
+    .pause(new FiniteDuration(1, duration.SECONDS))
     .exec(http("Update Customer")
       .post("/customer")
       .body(StringBody(
@@ -40,7 +40,7 @@ class SampleRestServiceSimulation extends Simulation {
       ))
       .check(status.is(200))
     )
-    .pause(1)
+    .pause(new FiniteDuration(1, duration.SECONDS))
     .exec(http("Delete Customer")
       .delete("/customer/${id}")
       .check(status.is(200))
@@ -48,7 +48,8 @@ class SampleRestServiceSimulation extends Simulation {
 
   setUp(
     scn.inject(
-      constantUsersPerSec(propertiesUtil.getConstantUsersPerSec.toDouble) during(new FiniteDuration(propertiesUtil.getDurationInMinutes.toLong, duration.MINUTES))
+      // if no of concurrent request per second is 4, then rampUsers = (no of concurrent request per second * total duration of simulation in seconds)
+      rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over(new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
     ).protocols(httpConf)
   )
   .assertions(
