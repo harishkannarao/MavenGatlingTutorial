@@ -6,7 +6,7 @@
     </contextListener>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>target/gatling/gatling_request_response.log</file>
+        <file>target/gatling/gatling_output.log</file>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{15} - %msg%n%rEx</pattern>
             <immediateFlush>false</immediateFlush>
@@ -24,6 +24,8 @@
     <!-- 	<logger name="io.gatling.http" level="TRACE" /> -->
     <!-- Uncomment for logging ONLY FAILED HTTP request and responses -->
      	<logger name="io.gatling.http" level="DEBUG" />
+
+    <logger name="com.harishkannarao" level="DEBUG" />
 
     <root level="WARN">
         <appender-ref ref="FILE" />
