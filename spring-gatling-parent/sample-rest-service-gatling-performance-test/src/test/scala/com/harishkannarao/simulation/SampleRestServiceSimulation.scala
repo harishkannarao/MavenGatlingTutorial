@@ -38,11 +38,7 @@ class SampleRestServiceSimulation extends Simulation {
     .pause(new FiniteDuration(1, duration.SECONDS))
     .exec(http("Update Customer")
       .post("/customer")
-      .body(StringBody(
-      """
-        {"firstName":"Harish U","lastName":"Kannarao U","id":"${id}"}
-      """.stripMargin
-      ))
+      .body(ELFileBody("customer/updateCustomer.json")).asJSON
       .check(status.is(200))
     )
     .pause(new FiniteDuration(1, duration.SECONDS))
