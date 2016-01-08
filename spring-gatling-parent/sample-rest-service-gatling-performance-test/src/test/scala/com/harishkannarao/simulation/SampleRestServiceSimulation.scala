@@ -67,6 +67,10 @@ class SampleRestServiceSimulation extends Simulation {
 
   logger.debug(s"Static Feeder Values: $staticFeeder")
 
+  val jsonFileFeeder = jsonFile("calculator/sumValues.json").random
+
+  logger.debug(s"Json File Feeder Values: $jsonFileFeeder")
+
   def getRandomIntegerAsString(range: Int): String = {
     Random.nextInt(range).toString
   }
@@ -77,6 +81,8 @@ class SampleRestServiceSimulation extends Simulation {
 
   val sumCalculatorWithStaticFeeder = createSumCalculatorScenario("Addition of two integers with static feeder", staticFeeder)
 
+  val sumCalculatorWithJsonFileFeeder = createSumCalculatorScenario("Addition of two integers with json file feeder", jsonFileFeeder)
+
   val sumCalculatorWithDynamicFeeder = createSumCalculatorScenario("Addition of two integers with dynamic feeder", dynamicFeeder)
 
   setUp(
@@ -85,6 +91,9 @@ class SampleRestServiceSimulation extends Simulation {
       rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over(new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
     ).protocols(httpConf),
     sumCalculatorWithStaticFeeder.inject(
+      rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over(new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
+    ).protocols(httpConf),
+    sumCalculatorWithJsonFileFeeder.inject(
       rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over(new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
     ).protocols(httpConf),
     sumCalculatorWithDynamicFeeder.inject(
