@@ -27,7 +27,7 @@
 
     <logger name="com.harishkannarao" level="TRACE" />
 
-    <root level="TRACE">
+    <root level="WARN">
         <appender-ref ref="FILE" />
         <!--<appender-ref ref="CONSOLE" />-->
     </root>
