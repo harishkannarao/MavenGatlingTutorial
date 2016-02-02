@@ -14,6 +14,7 @@
         <module>spring-boot-sample-web-app</module>
         <module>test-config</module>
         <module>sample-rest-service-gatling-performance-test</module>
+        <module>sample-web-app-gatling-performance-test</module>
     </modules>
 
     <properties>
