@@ -1,4 +1,4 @@
-package com.ekiras.domain;
+package hello.domain;
 
 public class Person {
 

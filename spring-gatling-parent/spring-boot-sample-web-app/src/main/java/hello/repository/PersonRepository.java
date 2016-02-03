@@ -1,6 +1,6 @@
-package com.ekiras.repository;
+package hello.repository;
 
-import com.ekiras.domain.Person;
+import hello.domain.Person;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package com.ekiras;
+package hello;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;

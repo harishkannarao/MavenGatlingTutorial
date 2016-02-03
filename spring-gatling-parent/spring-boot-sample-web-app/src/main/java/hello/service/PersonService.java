@@ -1,7 +1,7 @@
-package com.ekiras.service;
+package hello.service;
 
-import com.ekiras.domain.Person;
-import com.ekiras.repository.PersonRepository;
+import hello.domain.Person;
+import hello.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

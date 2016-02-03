@@ -1,7 +1,7 @@
-package com.ekiras.controller;
+package hello.controller;
 
-import com.ekiras.domain.Person;
-import com.ekiras.service.PersonService;
+import hello.domain.Person;
+import hello.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
