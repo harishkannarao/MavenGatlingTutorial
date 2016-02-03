@@ -20,30 +20,42 @@ class SampleWebAppSimulation extends Simulation {
     .baseURL(propertiesUtil.getWebApplicationUrl) // Here is the root for all relative URLs
 
   val basicCrudOperations = scenario("Basic CRUD operations") // A scenario is a chain of requests and pauses
-    .exec(http("Create Customer")
-      .put("/customer")
-      .body(StringBody(
-        """
-          {"firstName":"Harish","lastName":"Kannarao"}
-        """.stripMargin))
-      .check(status.is(201))
-      .check(jsonPath("$.id").saveAs("id"))
-    )
-    .pause(new FiniteDuration(1, duration.SECONDS)) // Note that Gatling has recorder real time pauses
-    .exec(http("Get Customer")
-      .get("/customer/${id}")
+    .exec(http("Go to home page")
+      .get("")
       .check(status.is(200))
     )
-    .pause(new FiniteDuration(1, duration.SECONDS))
-    .exec(http("Update Customer")
-      .post("/customer")
-      .body(ELFileBody("customer/updateCustomer.json")).asJSON
+    .pause(new FiniteDuration(2, duration.SECONDS)) // Note that Gatling has recorder real time pauses
+    .exec(http("Go to create person page")
+      .get("/person/create")
       .check(status.is(200))
     )
-    .pause(new FiniteDuration(1, duration.SECONDS))
-    .exec(http("Delete Customer")
-      .delete("/customer/${id}")
-      .check(status.is(200))
+    .pause(new FiniteDuration(2, duration.SECONDS))
+    .exec(http("Create a person")
+        .post("/person/save")
+        .header("Content-Type", """application/x-www-form-urlencoded""")
+        .formParam("name", "Harish")
+        .formParam("email", "harish.gtec@gmail.com")
+        .formParam("password", "12345")
+        .formParam("mobile", "1234567890")
+        .check(status.is(200))
+        .check(css("a[class*='btn-warning']:first", "href").saveAs("editUrl"))
+    )
+    .pause(new FiniteDuration(2, duration.SECONDS))
+    .exec(http("Edit a person")
+        .get("${editUrl}")
+        .check(status.is(200))
+        .check(css("input[name='id']", "value").saveAs("id"))
+    )
+    .pause(new FiniteDuration(2, duration.SECONDS))
+    .exec(http("Save a person")
+        .post("/person/update")
+        .header("Content-Type", """application/x-www-form-urlencoded""")
+        .formParam("id", "${id}")
+        .formParam("name", "Harish123")
+        .formParam("email", "harish.gtec@gmail.com")
+        .formParam("password", "12345")
+        .formParam("mobile", "0987654321")
+        .check(status.is(200))
     )
 
   setUp(
@@ -52,7 +64,7 @@ class SampleWebAppSimulation extends Simulation {
     ).protocols(httpConf)
   )
   .assertions(
-    global.responseTime.mean.lessThan(2),
+    global.responseTime.mean.lessThan(10),
     global.successfulRequests.percent.greaterThan(95)
   )
 }
