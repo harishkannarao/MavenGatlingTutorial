@@ -38,7 +38,7 @@ class SampleWebAppSimulation extends Simulation {
         .formParam("password", "12345")
         .formParam("mobile", "1234567890")
         .check(status.is(200))
-        .check(css("a[class*='btn-warning']:first", "href").saveAs("editUrl"))
+        .check(css("a.btn.btn-warning:last-of-type", "href").saveAs("editUrl"))
     )
     .pause(new FiniteDuration(2, duration.SECONDS))
     .exec(http("Edit a person")

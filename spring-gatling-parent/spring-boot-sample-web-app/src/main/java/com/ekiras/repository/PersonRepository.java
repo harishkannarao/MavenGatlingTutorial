@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Repository
 public class PersonRepository {
@@ -25,6 +26,6 @@ public class PersonRepository {
     }
 
     public Collection<Person> findAll() {
-        return personMap.values();
+        return personMap.values().stream().sorted((o1, o2) -> o1.getId().compareTo(o2.getId())).collect(Collectors.toList());
     }
 }
