@@ -31,3 +31,10 @@ Simple showcase of a maven project using spring boot sample rest application and
 * Set environment variable CONSTANT_USERS_PER_SECOND=1
 * Set environment variable DURATION_IN_MINUTES=1
 * Execute **mvn clean install** or **mvn gatling:execute**
+
+### Steps to change Gatling jvm memory through environment variable
+
+* Open a terminal and go to **{ROOT_FOLDER}/spring-gatling-parent/sample-rest-service-gatling-performance-test**
+* Set environment variable **MAVEN_OPTS="-Xms256m -Xmx1024m"** or higher to increase the jvm memory for running performance test
+* Execute **mvn clean install** or **mvn gatling:execute**
+
