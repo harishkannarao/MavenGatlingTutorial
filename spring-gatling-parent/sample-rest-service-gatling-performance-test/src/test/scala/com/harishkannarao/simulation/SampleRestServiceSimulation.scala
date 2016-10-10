@@ -101,7 +101,7 @@ class SampleRestServiceSimulation extends Simulation {
     ).protocols(httpConf)
   )
   .assertions(
-    global.responseTime.mean.lessThan(2),
+    global.responseTime.mean.lessThan(10),
     global.successfulRequests.percent.greaterThan(95)
   )
 }

@@ -64,7 +64,7 @@ class SampleWebAppSimulation extends Simulation {
     ).protocols(httpConf)
   )
   .assertions(
-    global.responseTime.mean.lessThan(10),
+    global.responseTime.mean.lessThan(30),
     global.successfulRequests.percent.greaterThan(95)
   )
 }

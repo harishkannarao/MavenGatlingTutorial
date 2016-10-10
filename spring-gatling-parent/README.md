@@ -5,6 +5,8 @@ Simple showcase of a maven project using spring boot sample rest application and
 
 ### Steps to Execute REST Service Performance test
 
+* Open a terminal and go to **{ROOT_FOLDER}/spring-gatling-parent**
+* Execute **mvn clean install -N**
 * Open a terminal and go to **{ROOT_FOLDER}/spring-gatling-parent/spring-boot-sample-rest-service**
 * Execute **mvn spring-boot:run**
 * Open a terminal and go to **{ROOT_FOLDER}/spring-gatling-parent/test-config**
@@ -16,6 +18,8 @@ Simple showcase of a maven project using spring boot sample rest application and
 
 ### Steps to Execute Web App Performance test
 
+* Open a terminal and go to **{ROOT_FOLDER}/spring-gatling-parent**
+* Execute **mvn clean install -N**
 * Open a terminal and go to **{ROOT_FOLDER}/spring-gatling-parent/spring-boot-sample-web-app**
 * Execute **mvn spring-boot:run**
 * Open a terminal and go to **{ROOT_FOLDER}/spring-gatling-parent/test-config**
