@@ -1,7 +1,6 @@
 package com.harishkannarao.simulation
 
 import com.harishkannarao.config.PropertiesUtil
-import com.harishkannarao.util.SpringUtil
 import io.gatling.core.Predef._
 import io.gatling.core.feeder.{FeederBuilder, RecordSeqFeederBuilder}
 import io.gatling.core.structure.ScenarioBuilder
@@ -14,10 +13,11 @@ import scala.util.Random
 
 class SampleWebAppSimulation extends Simulation {
   val logger: Logger = LoggerFactory.getLogger(classOf[SampleWebAppSimulation])
-  val propertiesUtil: PropertiesUtil = SpringUtil.ctx.getBean(classOf[PropertiesUtil])
+  val propertiesUtil: PropertiesUtil = new PropertiesUtil()
 
   val httpConf = http
     .baseURL(propertiesUtil.getWebApplicationUrl) // Here is the root for all relative URLs
+    .shareConnections
 
   val basicCrudOperations = scenario("Basic CRUD operations") // A scenario is a chain of requests and pauses
     .exec(http("Go to home page")

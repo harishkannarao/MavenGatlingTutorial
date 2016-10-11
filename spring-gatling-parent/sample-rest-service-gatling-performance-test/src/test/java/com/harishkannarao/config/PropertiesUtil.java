@@ -1,46 +1,46 @@
 package com.harishkannarao.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Value;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
-@Component
 public class PropertiesUtil {
+    private final String applicationUrl;
+    private final String noOfRequestsPerSecond;
+    private final String totalDurationInSeconds;
 
-    @Autowired
-    @Value("${application.url}")
-    private String applicationUrl;
+    private final Properties testConfig;
 
-    @Autowired
-    @Value("${no.of.requests.per.second}")
-    private String noOfRequestsPerSecond;
+    public PropertiesUtil() {
+        String targetEnvironment = System.getProperty("targetEnvironment", "local");
 
-    @Autowired
-    @Value("${total.duration.in.seconds}")
-    private String totalDurationInSeconds;
+        testConfig = new Properties();
+        InputStream tcInputStream = this.getClass().getResourceAsStream("/properties/"+targetEnvironment+"-test-config.properties");
+        try {
+            testConfig.load(tcInputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            tcInputStream.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
+        applicationUrl = testConfig.getProperty("application.url");
+        noOfRequestsPerSecond = testConfig.getProperty("no.of.requests.per.second");
+        totalDurationInSeconds = testConfig.getProperty("total.duration.in.seconds");
+    }
 
     public String getApplicationUrl() {
         return applicationUrl;
-    }
-
-    public void setApplicationUrl(String applicationUrl) {
-        this.applicationUrl = applicationUrl;
     }
 
     public String getNoOfRequestsPerSecond() {
         return noOfRequestsPerSecond;
     }
 
-    public void setNoOfRequestsPerSecond(String noOfRequestsPerSecond) {
-        this.noOfRequestsPerSecond = noOfRequestsPerSecond;
-    }
-
     public String getTotalDurationInSeconds() {
         return totalDurationInSeconds;
-    }
-
-    public void setTotalDurationInSeconds(String totalDurationInSeconds) {
-        this.totalDurationInSeconds = totalDurationInSeconds;
     }
 }

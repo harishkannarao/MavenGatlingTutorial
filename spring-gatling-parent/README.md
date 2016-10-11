@@ -29,12 +29,10 @@ Simple showcase of a maven project using spring boot sample rest application and
 * Gatling html report will be available at **{ROOT_FOLDER}/spring-gatling-parent/sample-web-app-gatling-performance-test/target/gatling/results/**
 * Gatling http requests and failure responses will be available at **{ROOT_FOLDER}/spring-gatling-parent/sample-web-app-gatling-performance-test/target/gatling/gatling_request_response.log**
 
-### Steps to override property values through environment variables (Spring framework)
+### Steps to change target environment properties
 
 * Open a terminal and go to **{ROOT_FOLDER}/spring-gatling-parent/sample-rest-service-gatling-performance-test**
-* Set environment variable CONSTANT_USERS_PER_SECOND=1
-* Set environment variable DURATION_IN_MINUTES=1
-* Execute **mvn clean install** or **mvn gatling:execute**
+* Execute **mvn clean install -DtargetEnvironment=local** or **mvn gatling:execute -DtargetEnvironment=local**
 
 ### Steps to change Gatling jvm memory through environment variable
 
