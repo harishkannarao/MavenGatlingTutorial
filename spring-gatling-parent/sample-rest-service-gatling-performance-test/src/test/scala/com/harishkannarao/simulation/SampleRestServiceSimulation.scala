@@ -20,7 +20,8 @@ class SampleRestServiceSimulation extends Simulation {
     .shareConnections
     .contentTypeHeader("application/json")
 
-  val basicCrudOperations = scenario("Basic CRUD operations") // A scenario is a chain of requests and pauses
+  private val basicCrudScenarioName: String = "Basic CRUD operations"
+  val basicCrudOperations = scenario(basicCrudScenarioName) // A scenario is a chain of requests and pauses
     .exec(http("Create Customer")
       .put("/customer")
       .body(StringBody(
@@ -79,11 +80,14 @@ class SampleRestServiceSimulation extends Simulation {
     Map("value1" -> getRandomIntegerAsString(100), "value2" -> getRandomIntegerAsString(100))
   )
 
-  val sumCalculatorWithStaticFeeder = createSumCalculatorScenario("Addition of two integers with static feeder", staticFeeder)
+  private val additionWithStaticFeederName: String = "Addition of two integers with static feeder"
+  val sumCalculatorWithStaticFeeder = createSumCalculatorScenario(additionWithStaticFeederName, staticFeeder)
 
-  val sumCalculatorWithJsonFileFeeder = createSumCalculatorScenario("Addition of two integers with json file feeder", jsonFileFeeder)
+  private val additionWithJsonFeederName: String = "Addition of two integers with json file feeder"
+  val sumCalculatorWithJsonFileFeeder = createSumCalculatorScenario(additionWithJsonFeederName, jsonFileFeeder)
 
-  val sumCalculatorWithDynamicFeeder = createSumCalculatorScenario("Addition of two integers with dynamic feeder", dynamicFeeder)
+  private val additionalWithDynaicFeederName: String = "Addition of two integers with dynamic feeder"
+  val sumCalculatorWithDynamicFeeder = createSumCalculatorScenario(additionalWithDynaicFeederName, dynamicFeeder)
 
   private val basicCrudScenario: PopulatedScenarioBuilder = basicCrudOperations.inject(
     // if no of concurrent request per second is 4, then rampUsers = (no of concurrent request per second * total duration of simulation in seconds)
@@ -102,13 +106,24 @@ class SampleRestServiceSimulation extends Simulation {
     rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over (new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
   ).protocols(httpConf)
 
-
-  val scenarioBuilders: List[PopulatedScenarioBuilder] = List(
-    basicCrudScenario,
-    sumCalculatorStaticFeederScenario,
-    sumCalculatorJsonFeederScenario,
-    sumCalculatorDynamicFeederScenario
+  val scenarioBuildersMap: Map[String, PopulatedScenarioBuilder] = Map(
+    basicCrudScenarioName -> basicCrudScenario,
+    additionWithStaticFeederName -> sumCalculatorStaticFeederScenario,
+    additionWithJsonFeederName -> sumCalculatorJsonFeederScenario,
+    additionalWithDynaicFeederName -> sumCalculatorDynamicFeederScenario
   )
+
+  val scenarioName: String = System.getProperty("scenarioName")
+
+  def filterScenarios(scenariosMap: Map[String, PopulatedScenarioBuilder], scenarioName: String): List[PopulatedScenarioBuilder] = {
+    if(scenarioName != null) {
+      scenarioBuildersMap.filterKeys(keyName => keyName.equals(scenarioName)).values.toList
+    } else {
+      scenarioBuildersMap.values.toList
+    }
+  }
+
+  val scenarioBuilders: List[PopulatedScenarioBuilder] = filterScenarios(scenarioBuildersMap, scenarioName)
 
   setUp(
     scenarioBuilders

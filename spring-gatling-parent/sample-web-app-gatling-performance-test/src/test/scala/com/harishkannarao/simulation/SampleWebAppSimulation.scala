@@ -17,7 +17,8 @@ class SampleWebAppSimulation extends Simulation {
     .baseURL(propertiesUtil.getWebApplicationUrl) // Here is the root for all relative URLs
     .shareConnections
 
-  val basicCrudOperations = scenario("Basic CRUD operations") // A scenario is a chain of requests and pauses
+  private val basicCrudName: String = "Basic CRUD operations"
+  val basicCrudOperations = scenario(basicCrudName) // A scenario is a chain of requests and pauses
     .exec(http("Go to home page")
       .get("")
       .check(status.is(200))
@@ -71,7 +72,21 @@ class SampleWebAppSimulation extends Simulation {
       httpConf
     )
 
-  val scenarioBuilders: List[PopulatedScenarioBuilder] = List(basicCrudOperationsScenario)
+  val scenarioBuildersMap: Map[String, PopulatedScenarioBuilder] = Map(
+    basicCrudName -> basicCrudOperationsScenario
+  )
+
+  val scenarioName: String = System.getProperty("scenarioName")
+
+  def filterScenarios(scenariosMap: Map[String, PopulatedScenarioBuilder], scenarioName: String): List[PopulatedScenarioBuilder] = {
+    if(scenarioName != null) {
+      scenarioBuildersMap.filterKeys(keyName => keyName.equals(scenarioName)).values.toList
+    } else {
+      scenarioBuildersMap.values.toList
+    }
+  }
+
+  val scenarioBuilders: List[PopulatedScenarioBuilder] = filterScenarios(scenarioBuildersMap, scenarioName)
 
   setUp(
     scenarioBuilders

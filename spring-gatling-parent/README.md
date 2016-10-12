@@ -34,6 +34,11 @@ Simple showcase of a maven project using spring boot sample rest application and
 * Open a terminal and go to **{ROOT_FOLDER}/spring-gatling-parent/sample-rest-service-gatling-performance-test**
 * Execute **mvn clean install -DtargetEnvironment=local** or **mvn gatling:execute -DtargetEnvironment=local**
 
+### Steps to single scenario by name
+
+* Open a terminal and go to **{ROOT_FOLDER}/spring-gatling-parent/sample-rest-service-gatling-performance-test**
+* Execute **mvn clean install -DscenarioName="Basic CRUD operations"** or **mvn gatling:execute -DscenarioName="Basic CRUD operations"**
+
 ### Steps to change Gatling jvm memory through environment variable
 
 * Open a terminal and go to **{ROOT_FOLDER}/spring-gatling-parent/sample-rest-service-gatling-performance-test**
