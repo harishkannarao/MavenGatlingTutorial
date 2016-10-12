@@ -2,14 +2,12 @@ package com.harishkannarao.simulation
 
 import com.harishkannarao.config.PropertiesUtil
 import io.gatling.core.Predef._
-import io.gatling.core.feeder.{FeederBuilder, RecordSeqFeederBuilder}
-import io.gatling.core.structure.ScenarioBuilder
+import io.gatling.core.structure.PopulatedScenarioBuilder
 import io.gatling.http.Predef._
-import org.slf4j.{LoggerFactory, Logger}
+import org.slf4j.{Logger, LoggerFactory}
 
 import scala.concurrent.duration
 import scala.concurrent.duration._
-import scala.util.Random
 
 class SampleWebAppSimulation extends Simulation {
   val logger: Logger = LoggerFactory.getLogger(classOf[SampleWebAppSimulation])
@@ -58,10 +56,25 @@ class SampleWebAppSimulation extends Simulation {
         .check(status.is(200))
     )
 
+  val basicCrudOperationsScenario = basicCrudOperations
+    .inject(
+      rampUsers (
+        propertiesUtil.getNoOfRequestsPerSecond.toInt *
+          propertiesUtil.getTotalDurationInSeconds.toInt
+      ) over (
+        new FiniteDuration(
+          propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS
+        )
+      )
+    )
+    .protocols(
+      httpConf
+    )
+
+  val scenarioBuilders: List[PopulatedScenarioBuilder] = List(basicCrudOperationsScenario)
+
   setUp(
-    basicCrudOperations.inject(
-      rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over(new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
-    ).protocols(httpConf)
+    scenarioBuilders
   )
   .assertions(
     global.responseTime.mean.lessThan(30),

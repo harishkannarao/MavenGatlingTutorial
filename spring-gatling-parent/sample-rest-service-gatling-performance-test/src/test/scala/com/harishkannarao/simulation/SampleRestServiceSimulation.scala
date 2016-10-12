@@ -2,10 +2,10 @@ package com.harishkannarao.simulation
 
 import com.harishkannarao.config.PropertiesUtil
 import io.gatling.core.Predef._
-import io.gatling.core.feeder.{FeederBuilder, RecordSeqFeederBuilder}
-import io.gatling.core.structure.ScenarioBuilder
+import io.gatling.core.feeder.FeederBuilder
+import io.gatling.core.structure.{PopulatedScenarioBuilder, ScenarioBuilder}
 import io.gatling.http.Predef._
-import org.slf4j.{LoggerFactory, Logger}
+import org.slf4j.{Logger, LoggerFactory}
 
 import scala.concurrent.duration
 import scala.concurrent.duration._
@@ -85,20 +85,33 @@ class SampleRestServiceSimulation extends Simulation {
 
   val sumCalculatorWithDynamicFeeder = createSumCalculatorScenario("Addition of two integers with dynamic feeder", dynamicFeeder)
 
+  private val basicCrudScenario: PopulatedScenarioBuilder = basicCrudOperations.inject(
+    // if no of concurrent request per second is 4, then rampUsers = (no of concurrent request per second * total duration of simulation in seconds)
+    rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over (new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
+  ).protocols(httpConf)
+
+  private val sumCalculatorStaticFeederScenario: PopulatedScenarioBuilder = sumCalculatorWithStaticFeeder.inject(
+    rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over (new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
+  ).protocols(httpConf)
+
+  private val sumCalculatorJsonFeederScenario: PopulatedScenarioBuilder = sumCalculatorWithJsonFileFeeder.inject(
+    rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over (new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
+  ).protocols(httpConf)
+
+  private val sumCalculatorDynamicFeederScenario: PopulatedScenarioBuilder = sumCalculatorWithDynamicFeeder.inject(
+    rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over (new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
+  ).protocols(httpConf)
+
+
+  val scenarioBuilders: List[PopulatedScenarioBuilder] = List(
+    basicCrudScenario,
+    sumCalculatorStaticFeederScenario,
+    sumCalculatorJsonFeederScenario,
+    sumCalculatorDynamicFeederScenario
+  )
+
   setUp(
-    basicCrudOperations.inject(
-      // if no of concurrent request per second is 4, then rampUsers = (no of concurrent request per second * total duration of simulation in seconds)
-      rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over(new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
-    ).protocols(httpConf),
-    sumCalculatorWithStaticFeeder.inject(
-      rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over(new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
-    ).protocols(httpConf),
-    sumCalculatorWithJsonFileFeeder.inject(
-      rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over(new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
-    ).protocols(httpConf),
-    sumCalculatorWithDynamicFeeder.inject(
-      rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over(new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
-    ).protocols(httpConf)
+    scenarioBuilders
   )
   .assertions(
     global.responseTime.mean.lessThan(10),
