@@ -7,41 +7,47 @@ import java.util.Properties;
 public class PropertiesUtil {
 
     private final String webApplicationUrl;
-    private final String noOfRequestsPerSecond;
-    private final String totalDurationInSeconds;
+
+    private final String basicCrudWebScenarioPerSecond;
+    private final String basicCrudWebScenarioDurationInSecond;
 
     private final Properties testConfig;
+    private final Properties profileConfig;
 
     public PropertiesUtil() {
         String targetEnvironment = System.getProperty("targetEnvironment", "local");
+        String profile = System.getProperty("profile", "sanity");
 
         testConfig = new Properties();
         InputStream tcInputStream = this.getClass().getResourceAsStream("/properties/"+targetEnvironment+"-test-config.properties");
+        profileConfig = new Properties();
+        InputStream profileInputStream = this.getClass().getResourceAsStream("/properties/"+targetEnvironment+"-"+profile+".properties");
         try {
             testConfig.load(tcInputStream);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try {
             tcInputStream.close();
+            profileConfig.load(profileInputStream);
+            profileInputStream.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         webApplicationUrl = testConfig.getProperty("web.application.url");
-        noOfRequestsPerSecond = testConfig.getProperty("no.of.requests.per.second");
-        totalDurationInSeconds = testConfig.getProperty("total.duration.in.seconds");
+
+        basicCrudWebScenarioPerSecond = profileConfig.getProperty("basic.crud.web.scenario.per.second");
+        basicCrudWebScenarioDurationInSecond = profileConfig.getProperty("basic.crud.web.scenario.duration.in.second");
+
     }
 
     public String getWebApplicationUrl() {
         return webApplicationUrl;
     }
 
-    public String getNoOfRequestsPerSecond() {
-        return noOfRequestsPerSecond;
+    public String getBasicCrudWebScenarioPerSecond() {
+        return basicCrudWebScenarioPerSecond;
     }
 
-    public String getTotalDurationInSeconds() {
-        return totalDurationInSeconds;
+    public String getBasicCrudWebScenarioDurationInSecond() {
+        return basicCrudWebScenarioDurationInSecond;
     }
+
 }

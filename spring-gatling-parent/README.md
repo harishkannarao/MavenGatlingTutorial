@@ -29,10 +29,11 @@ Simple showcase of a maven project using spring boot sample rest application and
 * Gatling html report will be available at **{ROOT_FOLDER}/spring-gatling-parent/sample-web-app-gatling-performance-test/target/gatling/results/**
 * Gatling http requests and failure responses will be available at **{ROOT_FOLDER}/spring-gatling-parent/sample-web-app-gatling-performance-test/target/gatling/gatling_output.log**
 
-### Steps to change target environment properties
+### Steps to change target environment and profile properties
 
 * Open a terminal and go to **{ROOT_FOLDER}/spring-gatling-parent/sample-rest-service-gatling-performance-test**
-* Execute **mvn clean install -DtargetEnvironment=local** or **mvn gatling:execute -DtargetEnvironment=local**
+* Execute **mvn clean install -DtargetEnvironment=local -Dprofile=load** or **mvn gatling:execute -DtargetEnvironment=local -Dprofile=load**
+* Default value of targetEnvironment is **local** and profile is **sanity**
 
 ### Steps to single scenario by name
 

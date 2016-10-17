@@ -60,11 +60,11 @@ class SampleWebAppSimulation extends Simulation {
   val basicCrudOperationsScenario = basicCrudOperations
     .inject(
       rampUsers (
-        propertiesUtil.getNoOfRequestsPerSecond.toInt *
-          propertiesUtil.getTotalDurationInSeconds.toInt
+        propertiesUtil.getBasicCrudWebScenarioPerSecond.toInt *
+          propertiesUtil.getBasicCrudWebScenarioDurationInSecond.toInt
       ) over (
         new FiniteDuration(
-          propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS
+          propertiesUtil.getBasicCrudWebScenarioDurationInSecond.toLong, duration.SECONDS
         )
       )
     )

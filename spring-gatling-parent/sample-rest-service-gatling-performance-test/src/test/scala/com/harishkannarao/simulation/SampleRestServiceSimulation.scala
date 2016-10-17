@@ -91,19 +91,19 @@ class SampleRestServiceSimulation extends Simulation {
 
   private val basicCrudScenario: PopulatedScenarioBuilder = basicCrudOperations.inject(
     // if no of concurrent request per second is 4, then rampUsers = (no of concurrent request per second * total duration of simulation in seconds)
-    rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over (new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
+    rampUsers(propertiesUtil.getBasicCrudRestScenarioPerSecond.toInt * propertiesUtil.getBasicCrudRestScenarioDurationInSecond.toInt) over (new FiniteDuration(propertiesUtil.getBasicCrudRestScenarioDurationInSecond.toLong, duration.SECONDS))
   ).protocols(httpConf)
 
   private val sumCalculatorStaticFeederScenario: PopulatedScenarioBuilder = sumCalculatorWithStaticFeeder.inject(
-    rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over (new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
+    rampUsers(propertiesUtil.getSumCalculatorStaticFeederScenarioPerSecond.toInt * propertiesUtil.getSumCalculatorStaticFeederScenarioDurationInSecond.toInt) over (new FiniteDuration(propertiesUtil.getSumCalculatorStaticFeederScenarioDurationInSecond.toLong, duration.SECONDS))
   ).protocols(httpConf)
 
   private val sumCalculatorJsonFeederScenario: PopulatedScenarioBuilder = sumCalculatorWithJsonFileFeeder.inject(
-    rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over (new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
+    rampUsers(propertiesUtil.getSumCalculatorJsonFeederScenarioPerSecond.toInt * propertiesUtil.getSumCalculatorJsonFeederScenarioDurationInSecond.toInt) over (new FiniteDuration(propertiesUtil.getSumCalculatorJsonFeederScenarioDurationInSecond.toLong, duration.SECONDS))
   ).protocols(httpConf)
 
   private val sumCalculatorDynamicFeederScenario: PopulatedScenarioBuilder = sumCalculatorWithDynamicFeeder.inject(
-    rampUsers(propertiesUtil.getNoOfRequestsPerSecond.toInt * propertiesUtil.getTotalDurationInSeconds.toInt) over (new FiniteDuration(propertiesUtil.getTotalDurationInSeconds.toLong, duration.SECONDS))
+    rampUsers(propertiesUtil.getSumCalculatorDynamicFeederScenarioPerSecond.toInt * propertiesUtil.getSumCalculatorDynamicFeederScenarioDurationInSecond.toInt) over (new FiniteDuration(propertiesUtil.getSumCalculatorDynamicFeederScenarioDurationInSecond.toLong, duration.SECONDS))
   ).protocols(httpConf)
 
   val scenarioBuildersMap: Map[String, PopulatedScenarioBuilder] = Map(
