@@ -19,8 +19,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.boot.version>1.2.6.RELEASE</spring.boot.version>
-        <spring.loaded.version>1.2.4.RELEASE</spring.loaded.version>
+        <spring.boot.version>1.4.1.RELEASE</spring.boot.version>
+        <spring.loaded.version>1.2.6.RELEASE</spring.loaded.version>
+        <!-- Update to the version of tomcat used by spring boot while change spring-boot version -->
+        <tomcat.version>8.5.5</tomcat.version>
         <java.version>1.8</java.version>
         <gatling.version>2.1.7</gatling.version>
         <gatling-plugin.version>2.1.7</gatling-plugin.version>
