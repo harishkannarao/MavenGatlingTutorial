@@ -17,19 +17,20 @@ class SampleWebAppSimulation extends Simulation {
     .baseURL(propertiesUtil.getWebApplicationUrl) // Here is the root for all relative URLs
     .shareConnections
 
-  private val basicCrudName: String = "Basic CRUD operations"
-  val basicCrudOperations = scenario(basicCrudName) // A scenario is a chain of requests and pauses
-    .exec(http("Go to home page")
-      .get("")
-      .check(status.is(200))
-    )
-    .pause(new FiniteDuration(2, duration.SECONDS)) // Note that Gatling has recorder real time pauses
-    .exec(http("Go to create person page")
-      .get("/person/create")
-      .check(status.is(200))
-    )
-    .pause(new FiniteDuration(2, duration.SECONDS))
-    .exec(http("Create a person")
+  private val basicCrudScenarioName: String = "Basic CRUD operations"
+  val basicCrudOperationsScenario = scenario(basicCrudScenarioName) // A scenario is a chain of requests and pauses
+    .group(basicCrudScenarioName) {
+      exec(http("Go to home page")
+        .get("")
+        .check(status.is(200))
+      )
+      .pause(new FiniteDuration(2, duration.SECONDS)) // Note that Gatling has recorder real time pauses
+      .exec(http("Go to create person page")
+        .get("/person/create")
+        .check(status.is(200))
+      )
+      .pause(new FiniteDuration(2, duration.SECONDS))
+      .exec(http("Create a person")
         .post("/person/save")
         .header("Content-Type", """application/x-www-form-urlencoded""")
         .formParam("name", "Harish")
@@ -38,15 +39,15 @@ class SampleWebAppSimulation extends Simulation {
         .formParam("mobile", "1234567890")
         .check(status.is(200))
         .check(css("a.btn.btn-warning:last-of-type", "href").saveAs("editUrl"))
-    )
-    .pause(new FiniteDuration(2, duration.SECONDS))
-    .exec(http("Edit a person")
+      )
+      .pause(new FiniteDuration(2, duration.SECONDS))
+      .exec(http("Edit a person")
         .get("${editUrl}")
         .check(status.is(200))
         .check(css("input[name='id']", "value").saveAs("id"))
-    )
-    .pause(new FiniteDuration(2, duration.SECONDS))
-    .exec(http("Save a person")
+      )
+      .pause(new FiniteDuration(2, duration.SECONDS))
+      .exec(http("Save a person")
         .post("/person/update")
         .header("Content-Type", """application/x-www-form-urlencoded""")
         .formParam("id", "${id}")
@@ -55,9 +56,10 @@ class SampleWebAppSimulation extends Simulation {
         .formParam("password", "12345")
         .formParam("mobile", "0987654321")
         .check(status.is(200))
-    )
+      )
+  }
 
-  val basicCrudOperationsScenario = basicCrudOperations
+  val basicCrudOperationsPopulatedScenario = basicCrudOperationsScenario
     .inject(
       rampUsers (
         propertiesUtil.getBasicCrudWebScenarioPerSecond.toInt *
@@ -73,7 +75,7 @@ class SampleWebAppSimulation extends Simulation {
     )
 
   val scenarioBuildersMap: Map[String, PopulatedScenarioBuilder] = Map(
-    basicCrudName -> basicCrudOperationsScenario
+    basicCrudScenarioName -> basicCrudOperationsPopulatedScenario
   )
 
   val scenarioName: String = System.getProperty("scenarioName")

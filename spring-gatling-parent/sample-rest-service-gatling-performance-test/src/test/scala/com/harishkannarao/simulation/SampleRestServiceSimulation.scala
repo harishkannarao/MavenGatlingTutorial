@@ -22,43 +22,47 @@ class SampleRestServiceSimulation extends Simulation {
 
   private val basicCrudScenarioName: String = "Basic CRUD operations"
   val basicCrudOperations = scenario(basicCrudScenarioName) // A scenario is a chain of requests and pauses
-    .exec(http("Create Customer")
-      .put("/customer")
-      .body(StringBody(
-        """
-          {"firstName":"Harish","lastName":"Kannarao"}
-        """.stripMargin))
-      .check(status.is(201))
-      .check(jsonPath("$.id").saveAs("id"))
-    )
-    .pause(new FiniteDuration(1, duration.SECONDS)) // Note that Gatling has recorder real time pauses
-    .exec(http("Get Customer")
-      .get("/customer/${id}")
-      .check(status.is(200))
-    )
-    .pause(new FiniteDuration(1, duration.SECONDS))
-    .exec(http("Update Customer")
-      .post("/customer")
-      .body(ELFileBody("customer/updateCustomer.json")).asJSON
-      .check(status.is(200))
-    )
-    .pause(new FiniteDuration(1, duration.SECONDS))
-    .exec(http("Delete Customer")
-      .delete("/customer/${id}")
-      .check(status.is(200))
-    )
+    .group(basicCrudScenarioName) {
+      exec(http("Create Customer")
+        .put("/customer")
+        .body(StringBody(
+          """
+            {"firstName":"Harish","lastName":"Kannarao"}
+          """.stripMargin))
+        .check(status.is(201))
+        .check(jsonPath("$.id").saveAs("id"))
+      )
+      .pause(new FiniteDuration(1, duration.SECONDS)) // Note that Gatling has recorder real time pauses
+      .exec(http("Get Customer")
+        .get("/customer/${id}")
+        .check(status.is(200))
+      )
+      .pause(new FiniteDuration(1, duration.SECONDS))
+      .exec(http("Update Customer")
+        .post("/customer")
+        .body(ELFileBody("customer/updateCustomer.json")).asJSON
+        .check(status.is(200))
+      )
+      .pause(new FiniteDuration(1, duration.SECONDS))
+      .exec(http("Delete Customer")
+        .delete("/customer/${id}")
+        .check(status.is(200))
+      )
+  }
 
 
   def createSumCalculatorScenario(scenarioName: String, feederBuilder: FeederBuilder[_]): ScenarioBuilder = {
     scenario(scenarioName)
       .feed(feederBuilder)
-      .exec(
-        http("Add two values")
-          .get("/calculator/sum")
-          .queryParam("value1", "${value1}")
-          .queryParam("value2", "${value2}")
-          .check(status.is(200))
-      )
+      .group(scenarioName) {
+        exec(
+          http("Add two values")
+            .get("/calculator/sum")
+            .queryParam("value1", "${value1}")
+            .queryParam("value2", "${value2}")
+            .check(status.is(200))
+        )
+      }
   }
 
   val staticFeeder = Array(
