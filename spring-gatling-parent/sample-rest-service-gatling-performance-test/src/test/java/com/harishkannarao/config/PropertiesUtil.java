@@ -19,7 +19,15 @@ public class PropertiesUtil {
     private final Properties testConfig;
     private final Properties profileConfig;
 
-    public PropertiesUtil() {
+    private static class SingletonHelper {
+        private static final PropertiesUtil INSTANCE = new PropertiesUtil();
+    }
+
+    public static PropertiesUtil getInstance() {
+        return SingletonHelper.INSTANCE;
+    }
+
+    private PropertiesUtil() {
         String targetEnvironment = System.getProperty("targetEnvironment", "local");
         String profile = System.getProperty("profile", "sanity");
 
