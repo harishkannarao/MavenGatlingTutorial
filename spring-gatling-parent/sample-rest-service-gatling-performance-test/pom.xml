@@ -55,10 +55,10 @@
                     <resultsFolder>target/gatling/results</resultsFolder>
                     <bodiesFolder>src/test/resources/bodies</bodiesFolder>
                     <simulationsFolder>src/test/scala</simulationsFolder>
-                    <simulationClass>com.harishkannarao.simulation.SampleRestServiceSimulation</simulationClass>
                     <noReports>false</noReports>
                     <propagateSystemProperties>true</propagateSystemProperties>
                     <failOnError>true</failOnError>
+                    <runMultipleSimulations>true</runMultipleSimulations>
                 </configuration>
                 <executions>
                     <execution>
