@@ -45,15 +45,39 @@
             </plugin>
 
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>run-rest-service</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>pre-integration-test</phase>
+                        <configuration>
+                            <executable>java</executable>
+                            <arguments>
+                                <argument>-jar</argument>
+                                <argument>${project.basedir}/../spring-boot-sample-web-app/target/spring-boot-sample-web-app-${project.version}.war</argument>
+                            </arguments>
+                            <async>true</async>
+                            <asyncDestroyOnShutdown>true</asyncDestroyOnShutdown>
+                            <skip>false</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>io.gatling</groupId>
                 <artifactId>gatling-maven-plugin</artifactId>
                 <configuration>
                     <skip>false</skip>
-                    <configFolder>src/test/resources</configFolder>
-                    <dataFolder>src/test/resources/data</dataFolder>
-                    <resultsFolder>target/gatling/results</resultsFolder>
-                    <bodiesFolder>src/test/resources/bodies</bodiesFolder>
-                    <simulationsFolder>src/test/scala</simulationsFolder>
+                    <configFolder>${project.basedir}/src/test/resources</configFolder>
+                    <dataFolder>${project.basedir}/src/test/resources/data</dataFolder>
+                    <resultsFolder>${project.basedir}/target/gatling/results</resultsFolder>
+                    <bodiesFolder>${project.basedir}/src/test/resources/bodies</bodiesFolder>
+                    <simulationsFolder>${project.basedir}/src/test/scala</simulationsFolder>
                     <simulationClass>com.harishkannarao.simulation.SampleWebAppSimulation</simulationClass>
                     <noReports>false</noReports>
                     <propagateSystemProperties>true</propagateSystemProperties>
@@ -61,6 +85,7 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <id>run-gatling-web-app-test</id>
                         <goals>
                             <goal>execute</goal>
                         </goals>

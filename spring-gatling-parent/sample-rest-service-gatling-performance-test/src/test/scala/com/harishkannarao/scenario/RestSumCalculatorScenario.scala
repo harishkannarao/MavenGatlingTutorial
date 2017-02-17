@@ -3,7 +3,7 @@ package com.harishkannarao.scenario
 import com.harishkannarao.config.{HttpConfiguration, PropertiesUtil}
 import io.gatling.core.Predef._
 import io.gatling.core.feeder.FeederBuilder
-import io.gatling.core.structure.{PopulatedScenarioBuilder, ScenarioBuilder}
+import io.gatling.core.structure.{PopulationBuilder, ScenarioBuilder}
 import io.gatling.http.Predef._
 import org.slf4j.{Logger, LoggerFactory}
 
@@ -57,15 +57,15 @@ object RestSumCalculatorScenario {
   val additionalWithDynaicFeederName: String = "Addition of two integers with dynamic feeder"
   val sumCalculatorWithDynamicFeeder = createSumCalculatorScenario(additionalWithDynaicFeederName, dynamicFeeder)
 
-  val sumCalculatorStaticFeederScenario: PopulatedScenarioBuilder = sumCalculatorWithStaticFeeder.inject(
+  val sumCalculatorStaticFeederScenario: PopulationBuilder = sumCalculatorWithStaticFeeder.inject(
     rampUsers(PropertiesUtil.getInstance.getSumCalculatorStaticFeederScenarioPerSecond.toInt * PropertiesUtil.getInstance.getSumCalculatorStaticFeederScenarioDurationInSecond.toInt) over (new FiniteDuration(PropertiesUtil.getInstance.getSumCalculatorStaticFeederScenarioDurationInSecond.toLong, duration.SECONDS))
   ).protocols(HttpConfiguration.httpConf)
 
-  val sumCalculatorJsonFeederScenario: PopulatedScenarioBuilder = sumCalculatorWithJsonFileFeeder.inject(
+  val sumCalculatorJsonFeederScenario: PopulationBuilder = sumCalculatorWithJsonFileFeeder.inject(
     rampUsers(PropertiesUtil.getInstance.getSumCalculatorJsonFeederScenarioPerSecond.toInt * PropertiesUtil.getInstance.getSumCalculatorJsonFeederScenarioDurationInSecond.toInt) over (new FiniteDuration(PropertiesUtil.getInstance.getSumCalculatorJsonFeederScenarioDurationInSecond.toLong, duration.SECONDS))
   ).protocols(HttpConfiguration.httpConf)
 
-  val sumCalculatorDynamicFeederScenario: PopulatedScenarioBuilder = sumCalculatorWithDynamicFeeder.inject(
+  val sumCalculatorDynamicFeederScenario: PopulationBuilder = sumCalculatorWithDynamicFeeder.inject(
     rampUsers(PropertiesUtil.getInstance.getSumCalculatorDynamicFeederScenarioPerSecond.toInt * PropertiesUtil.getInstance.getSumCalculatorDynamicFeederScenarioDurationInSecond.toInt) over (new FiniteDuration(PropertiesUtil.getInstance.getSumCalculatorDynamicFeederScenarioDurationInSecond.toLong, duration.SECONDS))
   ).protocols(HttpConfiguration.httpConf)
 

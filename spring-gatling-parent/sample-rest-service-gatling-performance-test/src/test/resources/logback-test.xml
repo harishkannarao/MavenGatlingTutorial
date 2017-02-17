@@ -5,7 +5,7 @@
         <resetJUL>true</resetJUL>
     </contextListener>
 
-    <property name="LOG_FILE" value="target/gatling/gatling_output.log"/>
+    <property name="LOG_FILE" value="target/gatling/gatling_rest_perf_test_output.log"/>
 
     <appender name="FILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">

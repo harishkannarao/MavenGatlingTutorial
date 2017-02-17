@@ -1,6 +1,5 @@
 import java.nio.file.Path
-
-import io.gatling.core.util.PathHelper._
+import io.gatling.commons.util.PathHelper._
 
 object IDEPathHelper {
 
@@ -16,7 +15,7 @@ object IDEPathHelper {
 	val bodiesDirectory = mavenResourcesDirectory / "bodies"
 
 	val recorderOutputDirectory = mavenSourcesDirectory
-	val resultsDirectory = mavenTargetDirectory / "results"
+	val resultsDirectory = mavenTargetDirectory / "gatling"
 
 	val recorderConfigFile = mavenResourcesDirectory / "recorder.conf"
 }

@@ -2,7 +2,7 @@ package com.harishkannarao.simulation
 
 import com.harishkannarao.config.PropertiesUtil
 import io.gatling.core.Predef._
-import io.gatling.core.structure.PopulatedScenarioBuilder
+import io.gatling.core.structure.PopulationBuilder
 import io.gatling.http.Predef._
 import org.slf4j.{Logger, LoggerFactory}
 
@@ -74,13 +74,13 @@ class SampleWebAppSimulation extends Simulation {
       httpConf
     )
 
-  val scenarioBuildersMap: Map[String, PopulatedScenarioBuilder] = Map(
+  val scenarioBuildersMap: Map[String, PopulationBuilder] = Map(
     basicCrudScenarioName -> basicCrudOperationsPopulatedScenario
   )
 
   val scenarioName: String = System.getProperty("scenarioName")
 
-  def filterScenarios(scenariosMap: Map[String, PopulatedScenarioBuilder], scenarioName: String): List[PopulatedScenarioBuilder] = {
+  def filterScenarios(scenariosMap: Map[String, PopulationBuilder], scenarioName: String): List[PopulationBuilder] = {
     if(scenarioName != null) {
       scenarioBuildersMap.filterKeys(keyName => keyName.equals(scenarioName)).values.toList
     } else {
@@ -88,7 +88,7 @@ class SampleWebAppSimulation extends Simulation {
     }
   }
 
-  val scenarioBuilders: List[PopulatedScenarioBuilder] = filterScenarios(scenarioBuildersMap, scenarioName)
+  val scenarioBuilders: List[PopulationBuilder] = filterScenarios(scenarioBuildersMap, scenarioName)
 
   setUp(
     scenarioBuilders
