@@ -56,14 +56,35 @@
                         </goals>
                         <phase>pre-integration-test</phase>
                         <configuration>
-                            <executable>java</executable>
+                            <executable>mvn</executable>
+                            <workingDirectory>${project.basedir}/../spring-boot-sample-rest-service</workingDirectory>
                             <arguments>
-                                <argument>-jar</argument>
-                                <argument>${project.basedir}/../spring-boot-sample-rest-service/target/spring-boot-sample-rest-service-${project.version}.jar</argument>
+                                <argument>spring-boot:run</argument>
                             </arguments>
                             <async>true</async>
-                            <asyncDestroyOnShutdown>true</asyncDestroyOnShutdown>
                             <skip>false</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>wait-for-ping</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <skip>false</skip>
+                            <target name="wait-for-ping-resource">
+                                <waitfor maxwait="1" maxwaitunit="minute" checkevery="500">
+                                    <http url="http://localhost:9000/ping.txt"/>
+                                </waitfor>
+                            </target>
                         </configuration>
                     </execution>
                 </executions>

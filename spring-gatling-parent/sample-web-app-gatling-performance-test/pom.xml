@@ -49,20 +49,41 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>run-rest-service</id>
+                        <id>run-web-app</id>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <phase>pre-integration-test</phase>
                         <configuration>
-                            <executable>java</executable>
+                            <executable>mvn</executable>
+                            <workingDirectory>${project.basedir}/../spring-boot-sample-web-app</workingDirectory>
                             <arguments>
-                                <argument>-jar</argument>
-                                <argument>${project.basedir}/../spring-boot-sample-web-app/target/spring-boot-sample-web-app-${project.version}.war</argument>
+                                <argument>spring-boot:run</argument>
                             </arguments>
                             <async>true</async>
-                            <asyncDestroyOnShutdown>true</asyncDestroyOnShutdown>
                             <skip>false</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>wait-for-ping</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <skip>false</skip>
+                            <target name="wait-for-ping-resource">
+                                <waitfor maxwait="1" maxwaitunit="minute" checkevery="500">
+                                    <http url="http://localhost:9100/ping.txt"/>
+                                </waitfor>
+                            </target>
                         </configuration>
                     </execution>
                 </executions>
