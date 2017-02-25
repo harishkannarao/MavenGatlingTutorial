@@ -64,6 +64,24 @@
                             <skip>false</skip>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>shutdown-web-app</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>post-integration-test</phase>
+                        <configuration>
+                            <classpathScope>test</classpathScope>
+                            <executable>java</executable>
+                            <arguments>
+                                <argument>-classpath</argument>
+                                <argument>-classpath</argument>
+                                <classpath/>
+                                <argument>com.harishkannarao.teardown.ShutdownWebApplication</argument>
+                            </arguments>
+                            <skip>false</skip>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -114,25 +132,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>com.github.cjnygard</groupId>
-                <artifactId>rest-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>post-integration-test</phase>
-                        <id>shutdown-web-app</id>
-                        <goals>
-                            <goal>rest-request</goal>
-                        </goals>
-                        <configuration>
-                            <endpoint>http://locahost:9100/shutdown</endpoint>
-                            <method>POST</method>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
     </build>
 
