@@ -75,7 +75,6 @@
                             <executable>java</executable>
                             <arguments>
                                 <argument>-classpath</argument>
-                                <argument>-classpath</argument>
                                 <classpath/>
                                 <argument>com.harishkannarao.teardown.ShutdownWebApplication</argument>
                             </arguments>
