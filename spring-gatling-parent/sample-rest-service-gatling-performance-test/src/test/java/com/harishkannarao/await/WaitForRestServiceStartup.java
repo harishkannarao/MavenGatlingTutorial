@@ -14,9 +14,15 @@ public class WaitForRestServiceStartup {
 
     public static void main(String[] args) {
         RestTemplate restTemplate = new RestTemplate();
-        given().ignoreExceptions().await().atMost(120, SECONDS).until(() -> {
-            ResponseEntity<String> response = restTemplate.exchange(REST_SERVICE_PING_URL, HttpMethod.GET, null, String.class);
-            assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
-        });
+        try {
+            given().ignoreExceptions().await().atMost(120, SECONDS).until(() -> {
+                ResponseEntity<String> response = restTemplate.exchange(REST_SERVICE_PING_URL, HttpMethod.GET, null, String.class);
+                assertThat(response.getStatusCode().is2xxSuccessful())
+                        .isTrue();
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 }
