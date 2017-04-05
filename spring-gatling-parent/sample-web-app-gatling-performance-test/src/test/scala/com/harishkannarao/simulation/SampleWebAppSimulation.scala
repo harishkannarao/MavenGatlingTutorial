@@ -15,7 +15,7 @@ class SampleWebAppSimulation extends Simulation {
 
   val httpConf = http
     .baseURL(propertiesUtil.getWebApplicationUrl) // Here is the root for all relative URLs
-    .shareConnections
+    .disableClientSharing
 
   private val basicCrudScenarioName: String = "Basic CRUD operations"
   val basicCrudOperationsScenario = scenario(basicCrudScenarioName) // A scenario is a chain of requests and pauses
